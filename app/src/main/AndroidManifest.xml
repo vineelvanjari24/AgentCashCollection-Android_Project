@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.CLOUDPOS_PRINTER" /> <!-- printhtml -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AgentCashCollection"
+        tools:targetApi="31">
+        <activity
+            android:name=".agent.ActivityMonthlySavingSum"
+            android:exported="false" />
+        <activity
+            android:name=".agent.ActivitySavingAccReports"
+            android:exported="false" />
+        <activity
+            android:name=".agent.ActivitySavingsAcc"
+            android:exported="false" />
+        <activity
+            android:name=".agent.ActivitySavingSummary"
+            android:exported="false" />
+        <activity
+            android:name=".agent.ActivityCollectionSummary"
+            android:exported="false" />
+        <activity
+            android:name=".agent.ActivityLoanMonthlySum"
+            android:exported="false" />
+        <activity
+            android:name=".agent.ActivityLoanAccReports"
+            android:exported="false" />
+        <activity
+            android:name=".agent.ActivityLoanCollection"
+            android:exported="false" />
+        <activity
+            android:name=".admin.MachineInfo"
+            android:exported="false" />
+        <activity
+            android:name=".admin.Setting"
+            android:exported="false" />
+        <activity
+            android:name=".admin.DeleteFiles"
+            android:exported="false" />
+        <activity
+            android:name=".admin.UploadDownload"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminSignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginDashBoard"
+            android:exported="false" />
+        <activity
+            android:name=".DeviceStartingPage"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".agent.SavingReceiptActivity"
+            android:exported="false" />
+        <activity
+            android:name=".agent.RecoveryReceiptActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SplashScreenActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".agent.AgentLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".agent.AgentSignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".agent.MainActivity"
+            android:exported="true"
+            android:parentActivityName=".agent.AgentLoginActivity" />
+    </application>
+
+</manifest>
