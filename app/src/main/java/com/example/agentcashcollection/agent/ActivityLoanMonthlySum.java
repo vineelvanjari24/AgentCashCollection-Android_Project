@@ -123,7 +123,6 @@ public class ActivityLoanMonthlySum extends AppCompatActivity {
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ActivityLoanAccReports.class));
                 finish();
             }
         });

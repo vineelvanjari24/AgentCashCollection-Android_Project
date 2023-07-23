@@ -124,7 +124,6 @@ public class ActivityMonthlySavingSum extends AppCompatActivity {
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ActivitySavingAccReports.class));
                 finish();
             }
         });

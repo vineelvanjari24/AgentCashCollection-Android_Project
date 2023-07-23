@@ -20,7 +20,6 @@ public class ActivitySavingAccReports extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), ActivitySavingSummary.class));
-                finish();
             }
         });
 
@@ -28,7 +27,6 @@ public class ActivitySavingAccReports extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), ActivityMonthlySavingSum.class));
-                finish();
             }
         });
     }

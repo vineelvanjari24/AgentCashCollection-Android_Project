@@ -153,7 +153,6 @@ public class ActivityCollectionSummary extends AppCompatActivity {
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(context, ActivityLoanAccReports.class));
                 finish();
             }
         });

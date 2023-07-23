@@ -29,7 +29,6 @@ public class ActivityLoanAccReports extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(context, ActivityCollectionSummary.class));
-                finish();
             }
         });
 
@@ -37,7 +36,6 @@ public class ActivityLoanAccReports extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(context, ActivityLoanMonthlySum.class));
-                finish();
             }
         });
     }
