@@ -6,12 +6,17 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,10 +37,12 @@ public class ActivitySavingSummary extends AppCompatActivity {
     SavingReceiptDBHelper savingReceiptDBHelper;
     SavingAccDBHelper savingAccDBHelper;
     ImageView goBack;
+    TableLayout tableLayoutCusList;
     String selectedDate;
-    ArrayList<Integer> receiptData;
+    ArrayList<String> receiptData;
     Boolean flag = false;
     Context context;
+    StringBuffer cusListString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,7 @@ public class ActivitySavingSummary extends AppCompatActivity {
         savingReceiptDBHelper = new SavingReceiptDBHelper(context);
         savingAccDBHelper = new SavingAccDBHelper(context);
 
+        tableLayoutCusList = findViewById(R.id.cusSavDepAccList);
         dateEditText = findViewById(R.id.date);
         getSummary = findViewById(R.id.getSummary);
         printSummary = findViewById(R.id.printSummary);
@@ -94,10 +102,48 @@ public class ActivitySavingSummary extends AppCompatActivity {
                 selectedDate = dateEditText.getText().toString();
                 if(!selectedDate.equals("")) {
                     receiptData = savingReceiptDBHelper.getReceiptRecordCount_Collection(selectedDate);
-                    if(receiptData.size() == 2) {
+                    Cursor cursor = savingReceiptDBHelper.getCursorReceiptRecord(selectedDate);
+                    if(receiptData.size() > 0) {
                         depositDateTextView.setText(selectedDate);
-                        totalReceiptsTextView.setText(""+receiptData.get(0));
-                        totalDepAmountTextview.setText(""+receiptData.get(1));
+                        totalReceiptsTextView.setText(receiptData.get(0));
+                        totalDepAmountTextview.setText(receiptData.get(1));
+
+                        if (cursor.moveToFirst()) {
+                            cusListString = new StringBuffer();
+
+                            TableRow headerRow = new TableRow(context);
+
+                            for (int i = 0; i < cursor.getColumnCount(); i++) {
+                                TextView headerTextView = new TextView(context);
+
+                                String str = String.format(cursor.getColumnName(i));
+                                headerTextView.setText(str);
+                                cusListString.append(str+"  ");
+                                headerTextView.setTextAppearance(R.style.boldText);
+                                headerRow.addView(headerTextView);
+                            }
+
+                            tableLayoutCusList.addView(headerRow);
+                            cusListString.append("\n");
+
+                            do {
+                                TableRow dataRow = new TableRow(context);
+
+                                for (int i = 0; i < cursor.getColumnCount(); i++) {
+                                    TextView dataTextView = new TextView(context);
+
+                                    String str = cursor.getString(i);
+                                    dataTextView.setText(str);
+                                    cusListString.append(str+"   ");
+                                    dataRow.addView(dataTextView);
+                                }
+
+                                tableLayoutCusList.addView(dataRow);
+                                cusListString.append("\n");
+                            } while (cursor.moveToNext());
+                        }
+
+                        cursor.close();
                     }
                     else Toast.makeText(context, "No Data Found on Selected Date", Toast.LENGTH_SHORT).show();
                 } else Toast.makeText(context, "Select Date", Toast.LENGTH_SHORT).show();
@@ -111,9 +157,10 @@ public class ActivitySavingSummary extends AppCompatActivity {
                     openPrinter();
                     if(flag) {
                         try {
-                            byte[] arrHeader = ("\n             SUMMARY\n\n").getBytes("GB2312");
+                            byte[] arrHeader = ("\n     DAY-WISE SAVING SUMMARY\n\n").getBytes("GB2312");
                             byte[] arrStar = ("********************************\n").getBytes("GB2312");
                             byte[] arrText1 = ("Deposit Date    :"+selectedDate+"\n\n").getBytes("GB2312");
+                            byte[] arrCusList = (cusListString+"\n\n").getBytes("GB2312");
                             byte[] arrText2 = ("Total Receipts  :"+receiptData.get(0)+"\n\n").getBytes("GB2312");
                             byte[] arrText3 = ("Total Deposit   :"+receiptData.get(1)+"\n\n").getBytes("GB2312");
 

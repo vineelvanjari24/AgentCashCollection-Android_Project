@@ -68,7 +68,7 @@ public class RecoveryReceiptDBHelper extends SQLiteOpenHelper {
 
         ArrayList<String> receiptRecord = new ArrayList<>();
 
-        if (cursorCollectionSum.moveToFirst()) {
+        if(cursorCollectionSum.moveToFirst() && cursorReceiptCount.getCount()>0) {
             receiptRecord.add(""+cursorReceiptCount.getCount());
             receiptRecord.add(cursorCollectionSum.getString(0));
         }

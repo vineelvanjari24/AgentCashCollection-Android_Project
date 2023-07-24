@@ -18,7 +18,6 @@ import com.example.agentcashcollection.dbhelper.AgentLoginDBHelper;
 public class AgentLoginActivity extends AppCompatActivity {
 
     Button login;
-    TextView signup;
     EditText username, password;
     AgentLoginDBHelper agentDBHelper = new AgentLoginDBHelper(this);
     Intent intentMainActivity, intentSignUp;
@@ -32,16 +31,9 @@ public class AgentLoginActivity extends AppCompatActivity {
         intentSignUp = new Intent(AgentLoginActivity.this, AgentSignUpActivity.class);
 
         login = findViewById(R.id.login);
-        signup = findViewById(R.id.textView);
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
 
-        signup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(intentSignUp);
-            }
-        });
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override

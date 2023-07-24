@@ -58,22 +58,27 @@ public class SavingReceiptDBHelper extends SQLiteOpenHelper {
         return receiptNo;
     }
 
-    public ArrayList<Integer> getReceiptRecordCount_Collection(String date) {
+    public ArrayList<String> getReceiptRecordCount_Collection(String date) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursorDepositSum = db.rawQuery("Select Sum(deposit_amount) From "+TABLE_NAME+" Where receipt_date = ?", new String[]{date});
         Cursor cursorReceiptCount = db.rawQuery("Select * From "+TABLE_NAME+" Where receipt_date = ?", new String[]{date});
 
-        ArrayList<Integer> receiptRecord = new ArrayList<>();
+        ArrayList<String> receiptRecord = new ArrayList<>();
 
-        if(cursorDepositSum.moveToFirst()) {
-            receiptRecord.add(cursorReceiptCount.getCount());
-            receiptRecord.add(cursorDepositSum.getInt(0));
+        if(cursorDepositSum.moveToFirst() && cursorReceiptCount.getCount()>0) {
+            receiptRecord.add(cursorReceiptCount.getCount()+"");
+            receiptRecord.add(cursorDepositSum.getString(0));
         }
 
         cursorReceiptCount.close();
         cursorDepositSum.close();
 
         return receiptRecord;
+    }
+
+    public Cursor getCursorReceiptRecord(String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("Select Account_Number, receipt_no, deposit_amount From "+TABLE_NAME+" Where receipt_date = ?", new String[]{date});
     }
 
     public ArrayList<String> getLastTransaction(long accNumber) {
@@ -83,7 +88,7 @@ public class SavingReceiptDBHelper extends SQLiteOpenHelper {
 
         if(cursorLastTran.moveToFirst()) {
             lastTransaction.add(cursorLastTran.getString(0));
-            lastTransaction.add(String.valueOf(cursorLastTran.getInt(1)));
+            lastTransaction.add(cursorLastTran.getString(1));
         }
 
         cursorLastTran.close();

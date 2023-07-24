@@ -67,4 +67,11 @@ public class AgentLoginDBHelper extends SQLiteOpenHelper {
         }
     }
 
+    public Cursor GetAll()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor =db.rawQuery("Select * from "+TABLE_NAME,null);
+        return cursor;
+    }
+
 }

@@ -19,14 +19,11 @@ public class AdminSignUpActivity extends AppCompatActivity {
     EditText username, password, rePassword;
 
     AdminLoginDBHelper adminLoginDBHelper = new AdminLoginDBHelper(this);
-    Intent intentLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_sign_up);
-
-        intentLogin = new Intent(this, AdminLoginActivity.class);
 
         signup = findViewById(R.id.signup);
         username = findViewById(R.id.username);
@@ -49,7 +46,6 @@ public class AdminSignUpActivity extends AppCompatActivity {
                             if(passwordText.length() >= 8) {
                                 if(adminLoginDBHelper.insertUser(usernameText, passwordText)) {
                                     Toast.makeText(getApplicationContext(), "Registration successful", Toast.LENGTH_SHORT).show();
-                                    startActivity(intentLogin);
                                     finish();
                                 }
                                 else

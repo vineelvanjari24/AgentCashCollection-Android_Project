@@ -19,14 +19,11 @@ public class AgentSignUpActivity extends AppCompatActivity {
     EditText username, password, rePassword;
 
     AgentLoginDBHelper agentLoginDBHelper = new AgentLoginDBHelper(this);
-    Intent intentLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agent_sign_up);
-
-        intentLogin = new Intent(this, AgentLoginActivity.class);
 
         signup = findViewById(R.id.signup);
         username = findViewById(R.id.username);
@@ -49,7 +46,6 @@ public class AgentSignUpActivity extends AppCompatActivity {
                             if(passwordText.length() >= 8) {
                                 if(agentLoginDBHelper.insertUser(usernameText, passwordText)) {
                                     Toast.makeText(AgentSignUpActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
-                                    startActivity(intentLogin);
                                     finish();
                                 }
                                 else

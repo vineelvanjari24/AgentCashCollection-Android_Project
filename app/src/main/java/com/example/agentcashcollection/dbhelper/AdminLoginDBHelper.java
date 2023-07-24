@@ -8,13 +8,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class AdminLoginDBHelper extends SQLiteOpenHelper {
 
-    private static final  String DATABSE_NAME = "AdminLoginDB.db";
+    private static final  String DATABASE_NAME = "AdminLoginDB.db";
     private static final String TABLE_NAME = "AdminUsers";
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
 
     public AdminLoginDBHelper(Context context) {
-        super(context, DATABSE_NAME, null, 1);
+        super(context, DATABASE_NAME, null, 1);
     }
 
     @Override

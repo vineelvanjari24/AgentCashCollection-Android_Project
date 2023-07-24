@@ -91,7 +91,7 @@ public class ActivityLoanMonthlySum extends AppCompatActivity {
                     openPrinter();
                     if(flag) {
                         try {
-                            byte[] arrHeader = ("\n             SUMMARY\n\n").getBytes("GB2312");
+                            byte[] arrHeader = ("\n     MONTHLY LOAN SUMMARY\n\n").getBytes("GB2312");
                             byte[] arrStar = ("********************************\n").getBytes("GB2312");
                             byte[] arrText1 = ("Collection Month :"+selectedDate+"\n\n").getBytes("GB2312");
                             byte[] arrText2 = ("Total Receipts   :"+receiptData.get(0)+"\n\n").getBytes("GB2312");
