@@ -113,4 +113,20 @@ public class SavingReceiptDBHelper extends SQLiteOpenHelper {
 
         return receiptRecord;
     }
+    public ArrayList<StringBuffer> getDetails()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cur = db.rawQuery("SELECT * FROM "+ TABLE_NAME,null );
+        ArrayList<StringBuffer> det = new ArrayList<>();
+        while (cur.moveToNext()) {
+            StringBuffer str = new StringBuffer();
+            str.append(cur.getString(0)+",");
+            str.append(cur.getInt(1)+",");
+            str.append(cur.getString(2)+",");
+            str.append(cur.getInt(3));
+            det.add(str);
+        }
+        return det;
+    }
+
 }
