@@ -87,6 +87,7 @@ public class UploadCollection extends AppCompatActivity {
         }
        private void toastmsg(String msg)
        {
+           p
            runOnUiThread(new Runnable() {
                @Override
                public void run() {
