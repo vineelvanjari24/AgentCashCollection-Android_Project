@@ -66,8 +66,8 @@ public class UploadCollection extends AppCompatActivity {
                     InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
                     bufferedReader = new BufferedReader(inputStreamReader);
                 } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(UploadCollection.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                    String msg=e.getMessage();
+                    toastmsg(msg);
                 }
                 return null;
             }
@@ -85,7 +85,15 @@ public class UploadCollection extends AppCompatActivity {
                 return null;
             }
         }
-
+       private void toastmsg(String msg)
+       {
+           runOnUiThread(new Runnable() {
+               @Override
+               public void run() {
+                   Toast.makeText(UploadCollection.this,msg, Toast.LENGTH_SHORT).show();
+               }
+           });
+       }
 }
 
 
