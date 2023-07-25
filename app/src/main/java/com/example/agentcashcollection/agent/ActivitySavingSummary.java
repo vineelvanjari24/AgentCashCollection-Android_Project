@@ -113,18 +113,16 @@ public class ActivitySavingSummary extends AppCompatActivity {
 
                             TableRow headerRow = new TableRow(context);
 
+                            cusListString.append("AccNum.  RecptNo.  DepAmt"+"\n");
+
                             for (int i = 0; i < cursor.getColumnCount(); i++) {
                                 TextView headerTextView = new TextView(context);
-
-                                String str = String.format(cursor.getColumnName(i));
-                                headerTextView.setText(str);
-                                cusListString.append(str+"  ");
+                                headerTextView.setText(String.format(cursor.getColumnName(i)));
                                 headerTextView.setTextAppearance(R.style.boldText);
                                 headerRow.addView(headerTextView);
                             }
 
                             tableLayoutCusList.addView(headerRow);
-                            cusListString.append("\n");
 
                             do {
                                 TableRow dataRow = new TableRow(context);
@@ -134,7 +132,10 @@ public class ActivitySavingSummary extends AppCompatActivity {
 
                                     String str = cursor.getString(i);
                                     dataTextView.setText(str);
-                                    cusListString.append(str+"   ");
+                                    if(i!=1)
+                                        cusListString.append(str).append("    ");
+                                    else
+                                        cusListString.append(str).append("        ");
                                     dataRow.addView(dataTextView);
                                 }
 
@@ -143,6 +144,7 @@ public class ActivitySavingSummary extends AppCompatActivity {
                             } while (cursor.moveToNext());
                         }
 
+                        //Log.d("Cus List", cusListString.toString());
                         cursor.close();
                     }
                     else Toast.makeText(context, "No Data Found on Selected Date", Toast.LENGTH_SHORT).show();
