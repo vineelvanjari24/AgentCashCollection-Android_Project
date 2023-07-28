@@ -79,80 +79,80 @@ public class ActivitySavingsAcc extends AppCompatActivity {
         deposit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!accHolderTextView.getText().toString().equals("")) {
-                    long prevDueAmount = Integer.parseInt(accountDetails.get(2));
-                    long depAmount = Integer.parseInt(depositAmount.getText().toString());
-                    long accNum = Integer.parseInt(accountDetails.get(0));
+                String depAmountStr = depositAmount.getText().toString();
+                if(!depAmountStr.equals("")) {
+                    if(!accHolderTextView.getText().toString().equals("")) {
+                        long prevDueAmount = Long.parseLong(accountDetails.get(2));
+                        long depAmount = Long.parseLong(depositAmount.getText().toString());
+                        long accNum = Long.parseLong(accountDetails.get(0));
 
-                    if(depAmount != 0) {
-                        Intent intentReceiptActivity = new Intent(context, SavingReceiptActivity.class);
+                            Intent intentReceiptActivity = new Intent(context, SavingReceiptActivity.class);
 
-                        if(savingAccDBHelper.updateBalanceAmount(accountDetails.get(0), prevDueAmount, depAmount)) {
-                            lastTransactionDetails = savingReceiptDBHelper.getLastTransaction(accNum);
+                            if(savingAccDBHelper.updateBalanceAmount(accountDetails.get(0), prevDueAmount, depAmount)) {
+                                lastTransactionDetails = savingReceiptDBHelper.getLastTransaction(accNum);
 
-                            if(savingReceiptDBHelper.insertReceiptRecord(accNum, depAmount)) {
-                                final Calendar calendar = Calendar.getInstance();
-                                int year = calendar.get(Calendar.YEAR);
-                                int month = calendar.get(Calendar.MONTH);
-                                int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-                                int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                                int minute = calendar.get(Calendar.MINUTE);
-                                int second = calendar.get(Calendar.SECOND);
-                                String receiptTime = hour+":"+minute+":"+second;
-                                String receiptDate;
-                                if(dayOfMonth < 10 && month + 1 <10) {
-                                    receiptDate = year + "-" + "0" +(month + 1) + "-" + "0" + dayOfMonth;
-                                } else if (dayOfMonth < 10) {
-                                    receiptDate = year + "-" + (month + 1) + "-" + "0" + dayOfMonth;
-                                } else if (month+1 < 10) {
-                                    receiptDate = year + "-" + "0" + (month + 1) + "-" + dayOfMonth;
-                                } else {
-                                    receiptDate = year + "-" + (month + 1) + "-" + dayOfMonth;
+                                if(savingReceiptDBHelper.insertReceiptRecord(accNum, depAmount)) {
+                                    final Calendar calendar = Calendar.getInstance();
+                                    int year = calendar.get(Calendar.YEAR);
+                                    int month = calendar.get(Calendar.MONTH);
+                                    int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+                                    int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                                    int minute = calendar.get(Calendar.MINUTE);
+                                    int second = calendar.get(Calendar.SECOND);
+                                    String receiptTime = hour+":"+minute+":"+second;
+                                    String receiptDate;
+                                    if(dayOfMonth < 10 && month + 1 <10) {
+                                        receiptDate = year + "-" + "0" +(month + 1) + "-" + "0" + dayOfMonth;
+                                    } else if (dayOfMonth < 10) {
+                                        receiptDate = year + "-" + (month + 1) + "-" + "0" + dayOfMonth;
+                                    } else if (month+1 < 10) {
+                                        receiptDate = year + "-" + "0" + (month + 1) + "-" + dayOfMonth;
+                                    } else {
+                                        receiptDate = year + "-" + (month + 1) + "-" + dayOfMonth;
+                                    }
+                                    long receiptNo = savingReceiptDBHelper.getReceiptNo(receiptDate, ""+accNum);
+
+                                    Bundle bundle = new Bundle();
+                                    if(lastTransactionDetails.size() == 2) {
+                                        bundle.putString("Last Bill Date", lastTransactionDetails.get(0));
+                                        bundle.putString("Last Paid", lastTransactionDetails.get(1));
+                                    }
+                                    else {
+                                        bundle.putString("Last Bill Date", "NIL");
+                                        bundle.putString("Last Paid", "NIL");
+                                    }
+                                    bundle.putString("Receipt No", ""+receiptNo);
+                                    bundle.putString("Receipt Date", receiptDate);
+                                    bundle.putString("Receipt Time", receiptTime);
+                                    bundle.putString("Account No", accountDetails.get(0));
+                                    bundle.putString("Account Holder", accountDetails.get(1));
+                                    bundle.putString("Old Balance", accountDetails.get(2));
+                                    bundle.putString("Dep Amount", ""+depAmount);
+                                    bundle.putString("New Balance", ""+(prevDueAmount + depAmount));
+                                    bundle.putString("Phone Number", accountDetails.get(3));
+                                    bundle.putString("Address", accountDetails.get(4));
+                                    intentReceiptActivity.putExtra("Account Details Bundle", bundle);
+
+                                    startActivity(intentReceiptActivity);
+
+                                    accNumberTextView.setText("");
+                                    accHolderTextView.setText("");
+                                    curBalanceTextView.setText("");
+                                    phoneNumTextView.setText("");
+                                    identifyingNum.setText("");
+                                    depositAmount.setText("");
                                 }
-                                long receiptNo = savingReceiptDBHelper.getReceiptNo(receiptDate, ""+accNum);
+                                else
+                                    Toast.makeText(context, "Unsuccessful, Linking Failed", Toast.LENGTH_SHORT).show();
 
-                                Bundle bundle = new Bundle();
-                                if(lastTransactionDetails.size() == 2) {
-                                    bundle.putString("Last Bill Date", lastTransactionDetails.get(0));
-                                    bundle.putString("Last Paid", lastTransactionDetails.get(1));
-                                }
-                                else {
-                                    bundle.putString("Last Bill Date", "NIL");
-                                    bundle.putString("Last Paid", "NIL");
-                                }
-                                bundle.putString("Receipt No", ""+receiptNo);
-                                bundle.putString("Receipt Date", receiptDate);
-                                bundle.putString("Receipt Time", receiptTime);
-                                bundle.putString("Account No", accountDetails.get(0));
-                                bundle.putString("Account Holder", accountDetails.get(1));
-                                bundle.putString("Old Balance", accountDetails.get(2));
-                                bundle.putString("Dep Amount", ""+depAmount);
-                                bundle.putString("New Balance", ""+(prevDueAmount + depAmount));
-                                bundle.putString("Phone Number", accountDetails.get(3));
-                                bundle.putString("Address", accountDetails.get(4));
-                                intentReceiptActivity.putExtra("Account Details Bundle", bundle);
-
-                                startActivity(intentReceiptActivity);
-
-                                accNumberTextView.setText("");
-                                accHolderTextView.setText("");
-                                curBalanceTextView.setText("");
-                                phoneNumTextView.setText("");
-                                identifyingNum.setText("");
-                                depositAmount.setText("");
-                            }
-                            else
-                                Toast.makeText(context, "Unsuccessful, Linking Failed", Toast.LENGTH_SHORT).show();
-
-                        } else
-                            Toast.makeText(context, "Amount Deposit Failed", Toast.LENGTH_SHORT).show();
+                            } else
+                                Toast.makeText(context, "Amount Deposit Failed", Toast.LENGTH_SHORT).show();
                     }
-                    else
-                        Toast.makeText(context, "Enter Deposit Amount", Toast.LENGTH_SHORT).show();
+                    else {
+                        Toast.makeText(context, "Get Details Account Details of Customer", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else {
-                    Toast.makeText(context, "Get Details Account Details of Customer", Toast.LENGTH_SHORT).show();
-                }
+                else Toast.makeText(context, "Enter Deposit Amount", Toast.LENGTH_SHORT).show();
             }
         });
     }

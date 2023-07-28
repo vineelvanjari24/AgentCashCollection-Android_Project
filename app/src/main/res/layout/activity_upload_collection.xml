@@ -6,52 +6,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
     tools:context=".admin.UploadCollection">
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="100dp"
-        android:text="Enter IP Address:"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="10dp"
-        android:hint="Enter Ip address:">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/Ipaddr"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/Connect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="140dp"
+        android:layout_width="132dp"
+        android:layout_height="70dp"
         android:layout_marginTop="20dp"
         android:backgroundTint="@color/ui_color"
-        android:text="Connect"
+        android:text="START SERVER"
         android:textColor="@color/black"
         app:cornerRadius="10dp" />
 
     <Button
         android:id="@+id/Upload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="140dp"
+        android:layout_width="132dp"
+        android:layout_height="70dp"
         android:layout_marginTop="20dp"
         android:backgroundTint="@color/ui_color"
         android:text="UPLOAD"
         android:textColor="@color/black"
         app:cornerRadius="10dp" />
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ipaddr"
+        android:text=""
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
+        android:textSize="24sp"/>
 </LinearLayout>

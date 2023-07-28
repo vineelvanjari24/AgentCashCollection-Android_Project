@@ -6,47 +6,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".admin.DownloadCustomer"
+    android:gravity="center"
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/statusTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter IP Address :"
-        android:textStyle="bold"
-        android:textSize="24sp"
-        android:textColor="@color/black"
-        android:layout_gravity="left"
+        android:text=""
+        android:textSize="16sp"
+        android:layout_gravity="top|left"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="10dp"/>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:boxStrokeColor="@color/textColor"
-        app:hintTextColor="@color/textColor"
-        android:minEms="14"
-        android:hint="IP - Address"
-        android:textColorHint="@color/black"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="10dp">
-
-        <EditText
-            android:id="@+id/editTextIPAddress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ems="15"
-            android:inputType="number" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_marginBottom="30dp"/>
 
     <Button
-        android:id="@+id/connectServer"
+        android:id="@+id/startServer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cornerRadius="10dp"
         android:backgroundTint="@color/ui_color"
-        android:text="Connect Server"
+        android:text="Start Server"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"/>
@@ -65,5 +44,16 @@
         android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"/>
 
+    <TextView
+        android:id="@+id/ipAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="#009688"
+        android:textAlignment="center"
+        android:ems="16"
+        android:layout_marginTop="20dp"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

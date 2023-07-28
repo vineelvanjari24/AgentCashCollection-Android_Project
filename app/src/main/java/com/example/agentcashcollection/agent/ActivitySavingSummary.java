@@ -99,6 +99,7 @@ public class ActivitySavingSummary extends AppCompatActivity {
         getSummary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tableLayoutCusList.removeAllViews();
                 selectedDate = dateEditText.getText().toString();
                 if(!selectedDate.equals("")) {
                     receiptData = savingReceiptDBHelper.getReceiptRecordCount_Collection(selectedDate);
@@ -144,11 +145,23 @@ public class ActivitySavingSummary extends AppCompatActivity {
                             } while (cursor.moveToNext());
                         }
 
-                        //Log.d("Cus List", cusListString.toString());
+                        tableLayoutCusList.setVisibility(View.VISIBLE);
                         cursor.close();
                     }
-                    else Toast.makeText(context, "No Data Found on Selected Date", Toast.LENGTH_SHORT).show();
-                } else Toast.makeText(context, "Select Date", Toast.LENGTH_SHORT).show();
+                    else {
+                        Toast.makeText(context, "No Data Found on Selected Date", Toast.LENGTH_SHORT).show();
+                        depositDateTextView.setText("");
+                        tableLayoutCusList.removeAllViews();
+                        totalReceiptsTextView.setText("");
+                        totalDepAmountTextview.setText("");
+                    }
+                } else {
+                    Toast.makeText(context, "Select a Date", Toast.LENGTH_SHORT).show();
+                    depositDateTextView.setText("");
+                    tableLayoutCusList.removeAllViews();
+                    totalReceiptsTextView.setText("");
+                    totalDepAmountTextview.setText("");
+                }
             }
         });
 
@@ -172,6 +185,7 @@ public class ActivitySavingSummary extends AppCompatActivity {
                             PrinterInterface.write(arrHeader, arrHeader.length);
                             PrinterInterface.write(arrStar, arrStar.length);
                             PrinterInterface.write(arrText1, arrText1.length);
+                            PrinterInterface.write(arrCusList, arrCusList.length);
                             PrinterInterface.write(arrText2, arrText2.length);
                             PrinterInterface.write(arrText3, arrText3.length);
                             PrinterInterface.write(arrStar, arrStar.length);

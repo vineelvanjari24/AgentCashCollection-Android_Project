@@ -106,7 +106,7 @@ public class ActivityCollectionSummary extends AppCompatActivity {
                         totalCollecTextView.setText("");
                     }
                 } else {
-                    Toast.makeText(context, "Select a Date", Toast.LENGTH_SHORT).show();collecDateTextView.setText("");
+                    Toast.makeText(context, "Select a Date", Toast.LENGTH_SHORT).show();
                     collecDateTextView.setText("");
                     totalReceiptsTextView.setText("");
                     totalCollecTextView.setText("");

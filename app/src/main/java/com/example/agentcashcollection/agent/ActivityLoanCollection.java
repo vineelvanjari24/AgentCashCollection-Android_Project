@@ -82,84 +82,85 @@ public class ActivityLoanCollection extends AppCompatActivity {
         recovery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!accHolderTextView.getText().toString().equals("")) {
-                    long prevDueAmount = Integer.parseInt(accountDetails.get(2));
-                    long dedAmount = Integer.parseInt(recoveryAmount.getText().toString());
-                    long accNum = Integer.parseInt(accountDetails.get(0));
+                String dedAmountStr = recoveryAmount.getText().toString();
+                if(!dedAmountStr.equals("")) {
+                    if(!accHolderTextView.getText().toString().equals("")) {
+                        long prevDueAmount = Long.parseLong(accountDetails.get(2));
+                        long dedAmount = Long.parseLong(dedAmountStr);
+                        long accNum = Long.parseLong(accountDetails.get(0));
 
-                    if (prevDueAmount != 0)  {
-                        if(!recoveryAmount.getText().toString().equals("")) {
-                            Intent intentReceiptActivity = new Intent(getApplicationContext(), RecoveryReceiptActivity.class);
+                        if (prevDueAmount != 0)  {
+                                Intent intentReceiptActivity = new Intent(getApplicationContext(), RecoveryReceiptActivity.class);
 
-                            if(cusDetailsDBHelper.updateDueAmount(accountDetails.get(0), prevDueAmount, dedAmount)) {
-                                lastTransactionDetails = recoveryReceiptDBHelper.getLastTransaction(accNum);
+                                if(cusDetailsDBHelper.updateDueAmount(accountDetails.get(0), prevDueAmount, dedAmount)) {
+                                    lastTransactionDetails = recoveryReceiptDBHelper.getLastTransaction(accNum);
 
-                                if(recoveryReceiptDBHelper.insertReceiptRecord(accNum, dedAmount)) {
-                                    final Calendar calendar = Calendar.getInstance();
-                                    int year = calendar.get(Calendar.YEAR);
-                                    int month = calendar.get(Calendar.MONTH);
-                                    int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-                                    int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                                    int minute = calendar.get(Calendar.MINUTE);
-                                    int second = calendar.get(Calendar.SECOND);
-                                    String receiptTime = hour+":"+minute+":"+second;
-                                    String receiptDate;
-                                    if(dayOfMonth < 10 && month + 1 <10) {
-                                        receiptDate = year + "-" + "0" +(month + 1) + "-" + "0" + dayOfMonth;
-                                    } else if (dayOfMonth < 10) {
-                                        receiptDate = year + "-" + (month + 1) + "-" + "0" + dayOfMonth;
-                                    } else if (month+1 < 10) {
-                                        receiptDate = year + "-" + "0" + (month + 1) + "-" + dayOfMonth;
-                                    } else {
-                                        receiptDate = year + "-" + (month + 1) + "-" + dayOfMonth;
+                                    if(recoveryReceiptDBHelper.insertReceiptRecord(accNum, dedAmount)) {
+                                        final Calendar calendar = Calendar.getInstance();
+                                        int year = calendar.get(Calendar.YEAR);
+                                        int month = calendar.get(Calendar.MONTH);
+                                        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+                                        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                                        int minute = calendar.get(Calendar.MINUTE);
+                                        int second = calendar.get(Calendar.SECOND);
+                                        String receiptTime = hour+":"+minute+":"+second;
+                                        String receiptDate;
+                                        if(dayOfMonth < 10 && month + 1 <10) {
+                                            receiptDate = year + "-" + "0" +(month + 1) + "-" + "0" + dayOfMonth;
+                                        } else if (dayOfMonth < 10) {
+                                            receiptDate = year + "-" + (month + 1) + "-" + "0" + dayOfMonth;
+                                        } else if (month+1 < 10) {
+                                            receiptDate = year + "-" + "0" + (month + 1) + "-" + dayOfMonth;
+                                        } else {
+                                            receiptDate = year + "-" + (month + 1) + "-" + dayOfMonth;
+                                        }
+                                        long receiptNo = recoveryReceiptDBHelper.getReceiptNo(receiptDate, ""+accNum);
+
+                                        Bundle bundle = new Bundle();
+                                        if(lastTransactionDetails.size() == 2) {
+                                            bundle.putString("Last Bill Date", lastTransactionDetails.get(0));
+                                            bundle.putString("Last Paid", lastTransactionDetails.get(1));
+                                        }
+                                        else {
+                                            bundle.putString("Last Bill Date", "NIL");
+                                            bundle.putString("Last Paid", "NIL");
+                                        }
+                                        bundle.putString("Receipt No", ""+receiptNo);
+                                        bundle.putString("Receipt Date", receiptDate);
+                                        bundle.putString("Receipt Time", receiptTime);
+                                        bundle.putString("Account No", accountDetails.get(0));
+                                        bundle.putString("Account Holder", accountDetails.get(1));
+                                        bundle.putString("Old Balance", accountDetails.get(2));
+                                        bundle.putString("Acc Open Date", accountDetails.get(3));
+                                        bundle.putString("Ded Amount", ""+dedAmount);
+                                        bundle.putString("New Balance", ""+(prevDueAmount - dedAmount));
+                                        bundle.putString("Phone Number", accountDetails.get(4));
+                                        bundle.putString("Address", accountDetails.get(5));
+                                        intentReceiptActivity.putExtra("Account Details Bundle", bundle);
+
+                                        startActivity(intentReceiptActivity);
+
+                                        accNumberTextView.setText("");
+                                        accHolderTextView.setText("");
+                                        phoneNumTextView.setText("");
+                                        dueAmountTextView.setText("");
+                                        accOpenDateTextView.setText("");
+                                        identifyingNum.setText("");
+                                        recoveryAmount.setText("");
                                     }
-                                    long receiptNo = recoveryReceiptDBHelper.getReceiptNo(receiptDate, ""+accNum);
+                                    else
+                                        Toast.makeText(context, "Unsuccessful, Linking Failed", Toast.LENGTH_SHORT).show();
 
-                                    Bundle bundle = new Bundle();
-                                    if(lastTransactionDetails.size() == 2) {
-                                        bundle.putString("Last Bill Date", lastTransactionDetails.get(0));
-                                        bundle.putString("Last Paid", lastTransactionDetails.get(1));
-                                    }
-                                    else {
-                                        bundle.putString("Last Bill Date", "NIL");
-                                        bundle.putString("Last Paid", "NIL");
-                                    }
-                                    bundle.putString("Receipt No", ""+receiptNo);
-                                    bundle.putString("Receipt Date", receiptDate);
-                                    bundle.putString("Receipt Time", receiptTime);
-                                    bundle.putString("Account No", accountDetails.get(0));
-                                    bundle.putString("Account Holder", accountDetails.get(1));
-                                    bundle.putString("Old Balance", accountDetails.get(2));
-                                    bundle.putString("Acc Open Date", accountDetails.get(3));
-                                    bundle.putString("Ded Amount", ""+dedAmount);
-                                    bundle.putString("New Balance", ""+(prevDueAmount - dedAmount));
-                                    bundle.putString("Phone Number", accountDetails.get(4));
-                                    bundle.putString("Address", accountDetails.get(5));
-                                    intentReceiptActivity.putExtra("Account Details Bundle", bundle);
+                                } else
+                                    Toast.makeText(context, "Amount Deposit Failed", Toast.LENGTH_SHORT).show();
 
-                                    startActivity(intentReceiptActivity);
-
-                                    accNumberTextView.setText("");
-                                    accHolderTextView.setText("");
-                                    phoneNumTextView.setText("");
-                                    dueAmountTextView.setText("");
-                                    accOpenDateTextView.setText("");
-                                    identifyingNum.setText("");
-                                    recoveryAmount.setText("");
-                                }
-                                else
-                                    Toast.makeText(context, "Unsuccessful, Linking Failed", Toast.LENGTH_SHORT).show();
-
-                            } else
-                                Toast.makeText(context, "Amount Deposit Failed", Toast.LENGTH_SHORT).show();
-                        }
-                        else Toast.makeText(context, "Enter Deposit Amount", Toast.LENGTH_SHORT).show();
-
-                    } else Toast.makeText(context, "No due amount for the account", Toast.LENGTH_SHORT).show();
+                        } else Toast.makeText(context, "No due amount for the account", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(context, "Get Details Account Details of Customer", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else {
-                    Toast.makeText(context, "Get Details Account Details of Customer", Toast.LENGTH_SHORT).show();
-                }
+                else Toast.makeText(context, "Enter Deposit Amount", Toast.LENGTH_SHORT).show();
             }
         });
     }
